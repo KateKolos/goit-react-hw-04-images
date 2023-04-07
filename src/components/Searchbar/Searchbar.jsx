@@ -22,23 +22,25 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <SearchbarContainer onSubmit={this.handleSubmit}>
-        <SearchForm>
-          <SearchFormBtn type="submit" className="button">
-            <span className="button-label">Search</span>
-          </SearchFormBtn>
+      <SearchbarContainer>
+        <header className="searchbar">
+          <SearchForm onSubmit={this.handleSubmit}>
+            <SearchFormBtn type="submit" className="button">
+              <span className="button-label">Search</span>
+            </SearchFormBtn>
 
-          <SearchInput
-            name="value"
-            className="input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-        </SearchForm>
+            <SearchInput
+              name="value"
+              className="input"
+              type="text"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          </SearchForm>
+        </header>
       </SearchbarContainer>
     );
   }
