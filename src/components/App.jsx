@@ -29,14 +29,14 @@ export class App extends Component {
     }
   };
 
-  createSearchQuery = searchQuery => {
+  handleFormSubmit = searchQuery => {
     this.setState({ searchQuery });
   };
 
   render() {
     return (
       <div>
-        <Searchbar createSearchQuery={this.createSearchQuery} />
+        <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery hits={this.state.hits} />
         {/* {this.state.error && (
           <p textAlign="center">Sorry. Something went wrong ... 😭</p>
