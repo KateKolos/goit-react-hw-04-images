@@ -5,36 +5,43 @@ import { ImageList } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
-    images: [],
+    searchQuery: '',
+    page: 1,
+    hits: [],
+    totalHits: 0,
+    error: null,
   };
 
-  componentDidUpdate(prevProps) {
-    const searchQuery = this.props.searchQuery.trim();
+  componentDidUpdate(prevState, prevProps) {
+    // const searchQuery = this.props.searchQuery.trim();
 
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-      fetchImages(searchQuery).then(images => {
-        this.setState({ images });
-      });
+    const { searchQuery, page } = this.state;
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
+      this.fetchImages(searchQuery, page);
     }
   }
 
+  fetchImages = async (query, page) => {
+    try {
+      const { hits, totalHits } = await fetchImages(query, page);
+      this.setState({ hits, totalHits });
+    } catch (error) {
+      this.setState({ error: error.message });
+    }
+  };
+
   render() {
-    const { images } = this.state;
+    const { hits } = this.state;
     return (
-      images && (
-        // <ul className="gallery">
-        //   {images.map(el => (
-        //     <li key={el.id} className="gallery-item">
-        //       <img src={el.webformatURL} alt="" />
-        //     </li>
-        //   ))}
-        // </ul>
-        <ImageList className="gallery">
-          {images.map(image => (
-            <ImageGalleryItem key={image.id} imageData={image} />
-          ))}
-        </ImageList>
-      )
+      <ImageList className="gallery">
+        {hits.map(hit => (
+          <ImageGalleryItem
+            key={hit.id}
+            webformatURL={hit.webformatURL}
+            tags={hit.tags}
+          />
+        ))}
+      </ImageList>
     );
   }
 }

@@ -7,9 +7,7 @@ import {
 } from './Searchbar.styled';
 
 export class Searchbar extends Component {
-  state = {
-    value: '',
-  };
+  state = { value: '' };
 
   handleChange = ({ target: { value } }) => {
     this.setState({ value });
@@ -18,6 +16,7 @@ export class Searchbar extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     this.props.createSearchQuery(this.state.value);
+    this.setState({ value: '' });
   };
 
   render() {
