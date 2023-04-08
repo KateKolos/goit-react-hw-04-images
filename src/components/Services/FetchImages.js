@@ -12,6 +12,6 @@ axios.defaults.params = {
 export const fetchImages = async (searchQuery, page) => {
   const { data } = await axios.get(`?q=${searchQuery}&page=${page}`);
 
-  console.log(data);
+  // console.log(data);
   return data;
 };
