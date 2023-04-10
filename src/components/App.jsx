@@ -6,6 +6,7 @@ import { Button } from './Button/Button';
 
 import { ThreeDots } from 'react-loader-spinner';
 import { Text } from './Text/Text';
+import { Modal } from './Modal/Modal';
 
 // import { Modal } from './Modal/Modal';
 
@@ -19,12 +20,12 @@ export class App extends Component {
     isActiveBtn: false,
     showModal: false,
     isLoading: false,
+    largeImage: '',
   };
 
   componentDidUpdate(_, prevState) {
     const { searchQuery, page } = this.state;
-    // console.log('this.state:', this.state.total);
-    // console.log('prev state:', prevState.total);
+
     if (prevState.searchQuery !== searchQuery) {
       this.getImages(searchQuery, page);
     }
@@ -36,13 +37,13 @@ export class App extends Component {
 
     try {
       const { hits, totalHits } = await fetchImages(searchQuery, page);
+
       this.setState(({ page, images }) => ({
-        // searchQuery: searchQuery,
         images: [...images, ...hits],
-        // total: totalHits,
         page: page + 1,
         isActiveBtn: true,
       }));
+
       if (images.length === totalHits) this.setState({ isActiveBtn: false });
     } catch (error) {
       this.setState({
@@ -52,25 +53,6 @@ export class App extends Component {
     } finally {
       this.setState({ isLoading: false });
     }
-
-    // const { searchQuery, page } = this.state;
-
-    // try {
-    //   this.setState({ isLoading: true });
-    //   const response = await fetchImages(searchQuery, page);
-
-    //   if (response.hits.length === 0) {
-    //     return <p>No pictures</p>;
-    //   }
-    //   this.setState(prevState => ({
-    //     images: [...prevState.images, ...response.hits],
-    //   }));
-    //   this.setState({ total: response.totalHits });
-    // } catch (error) {
-    //   return <p>Sorry, something went wrong...Please, try again</p>;
-    // } finally {
-    //   this.setState({ isLoading: false });
-    // }
   };
 
   handleFormSubmit = searchQuery => {
@@ -86,7 +68,8 @@ export class App extends Component {
   };
 
   render() {
-    const { error, isLoading, isActiveBtn } = this.state;
+    const { error, isLoading, isActiveBtn, showModal, largeImage } = this.state;
+
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -94,7 +77,17 @@ export class App extends Component {
           images={this.state.images}
           onGetImages={this.getLargeImage}
         />
-        {error && <Text textAlign="center" />}
+        {error && (
+          <div
+            style={
+              ({ textAlign: 'center' },
+              { fontSize: '25px' },
+              { fontWeight: '600' })
+            }
+          >
+            {error}
+          </div>
+        )}
         {isLoading && (
           <ThreeDots
             height="80"
@@ -111,12 +104,9 @@ export class App extends Component {
           />
         )}
         {isActiveBtn && <Button onLoadMore={() => this.getImages} />}
-        {/* {this.state.showModal && (
-          <Modal
-            largeImage={this.state.largeImage}
-            onClick={this.toggleModal}
-          />
-        )} */}
+        {showModal && (
+          <Modal largeimage={largeImage} onClick={this.toggleModal} />
+        )}
       </div>
     );
   }

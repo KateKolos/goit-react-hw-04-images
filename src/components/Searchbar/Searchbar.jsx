@@ -9,8 +9,10 @@ import {
 export class Searchbar extends Component {
   state = { value: '' };
 
-  handleChange = ({ target: { value } }) => {
-    this.setState({ value });
+  handleChange = e => {
+    this.setState({
+      value: e.target.value,
+    });
   };
 
   handleSubmit = evt => {
