@@ -5,7 +5,6 @@ import { fetchImages } from './Services/FetchImages';
 import { Button } from './Button/Button';
 
 import { ThreeDots } from 'react-loader-spinner';
-import { Text } from './Text/Text';
 import { Modal } from './Modal/Modal';
 
 // import { Modal } from './Modal/Modal';
@@ -15,19 +14,20 @@ export class App extends Component {
     searchQuery: '',
     page: 1,
     images: [],
-    total: 0,
-    error: null,
     isActiveBtn: false,
     showModal: false,
     isLoading: false,
     largeImage: '',
+    error: null,
+  };
+
+  handleFormSubmit = searchQuery => {
+    this.setState({ searchQuery });
   };
 
   componentDidUpdate(_, prevState) {
-    const { searchQuery, page } = this.state;
-
-    if (prevState.searchQuery !== searchQuery) {
-      this.getImages(searchQuery, page);
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      this.getImages();
     }
   }
 
@@ -53,10 +53,6 @@ export class App extends Component {
     } finally {
       this.setState({ isLoading: false });
     }
-  };
-
-  handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
   };
 
   getLargeImage = largeImage => {

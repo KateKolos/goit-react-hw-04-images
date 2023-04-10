@@ -7,23 +7,23 @@ import {
 } from './Searchbar.styled';
 
 export class Searchbar extends Component {
-  state = { value: '' };
+  state = { searchQuery: '' };
 
   handleChange = e => {
     this.setState({
-      value: e.target.value,
+      searchQuery: e.target.value,
     });
   };
 
-  handleSubmit = evt => {
-    evt.preventDefault();
-    const { value } = this.state;
+  handleSubmit = e => {
+    e.preventDefault();
+    const { searchQuery } = this.state;
 
-    if (value.trim() === '') {
+    if (searchQuery.trim() === '') {
       return;
     }
-    this.props.onSubmit(value);
-    this.setState({ value: '' });
+    this.props.onSubmit(searchQuery);
+    this.setState({ searchQuery: '' });
   };
 
   render() {
@@ -42,7 +42,7 @@ export class Searchbar extends Component {
               autoComplete="off"
               autoFocus
               placeholder="Search images and photos"
-              value={this.state.value}
+              value={this.state.searchQuery}
               onChange={this.handleChange}
             />
           </SearchForm>
