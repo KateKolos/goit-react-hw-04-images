@@ -1,3 +1,5 @@
+import toast, { Toaster } from 'react-hot-toast';
+
 import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -18,11 +20,12 @@ export class App extends Component {
     showModal: false,
     isLoading: false,
     largeImage: '',
+    totalHits: 0,
     error: null,
   };
 
   handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({ searchQuery, page: 1, images: [] });
   };
 
   componentDidUpdate(_, prevState) {
@@ -42,14 +45,24 @@ export class App extends Component {
         images: [...images, ...hits],
         page: page + 1,
         isActiveBtn: true,
+        totalHits,
       }));
 
-      if (images.length === totalHits) this.setState({ isActiveBtn: false });
+      if (images.length === totalHits) {
+        this.setState({ isActiveBtn: false });
+        return toast.error(
+          'Sorry, there are no images matching your request. Please try again.'
+        );
+      }
+      return toast.success(
+        `Success! Here are the pictures on your ${searchQuery} request`
+      );
     } catch (error) {
       this.setState({
         error: error.message,
         isActiveBtn: false,
       });
+      return toast.error('Something went wrong. Please try again!');
     } finally {
       this.setState({ isLoading: false });
     }
@@ -64,8 +77,21 @@ export class App extends Component {
   };
 
   render() {
-    const { error, isLoading, isActiveBtn, showModal, largeImage } = this.state;
+    const {
+      error,
+      isLoading,
+      isActiveBtn,
+      showModal,
+      largeImage,
+      page,
+      totalHits,
+    } = this.state;
 
+    const errorStyle = {
+      textAlign: 'center',
+      fontSize: '25px',
+      fontWeight: '600',
+    };
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -73,17 +99,8 @@ export class App extends Component {
           images={this.state.images}
           onGetImages={this.getLargeImage}
         />
-        {error && (
-          <div
-            style={
-              ({ textAlign: 'center' },
-              { fontSize: '25px' },
-              { fontWeight: '600' })
-            }
-          >
-            {error}
-          </div>
-        )}
+        <Toaster position="top-right" reverseOrder={false} />
+        {error && <div style={errorStyle}>{error}</div>}
         {isLoading && (
           <ThreeDots
             height="80"
@@ -99,7 +116,9 @@ export class App extends Component {
             visible={true}
           />
         )}
-        {isActiveBtn && <Button onLoadMore={() => this.getImages} />}
+        {isActiveBtn && page < Math.ceil(totalHits / 12) && (
+          <Button onLoadMore={() => this.getImages} />
+        )}
         {showModal && (
           <Modal largeimage={largeImage} onClick={this.toggleModal} />
         )}
