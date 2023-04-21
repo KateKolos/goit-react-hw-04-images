@@ -85,6 +85,7 @@ export class App extends Component {
       largeImage,
       page,
       totalHits,
+      images,
     } = this.state;
 
     const errorStyle = {
@@ -116,9 +117,12 @@ export class App extends Component {
             visible={true}
           />
         )}
-        {isActiveBtn && page < Math.ceil(totalHits / 12) && (
-          <Button onLoadMore={() => this.getImages} />
-        )}
+        {isActiveBtn &&
+          this.state.images &&
+          totalHits > 1 &&
+          images.length < totalHits && (
+            <Button onLoadMore={() => this.getImages} />
+          )}
         {showModal && (
           <Modal largeimage={largeImage} onClick={this.toggleModal} />
         )}
