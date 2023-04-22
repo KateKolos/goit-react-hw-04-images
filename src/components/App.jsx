@@ -83,7 +83,7 @@ export class App extends Component {
       isActiveBtn,
       showModal,
       largeImage,
-      page,
+
       totalHits,
       images,
     } = this.state;
