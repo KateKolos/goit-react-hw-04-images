@@ -9,8 +9,6 @@ import { Button } from './Button/Button';
 import { ThreeDots } from 'react-loader-spinner';
 import { Modal } from './Modal/Modal';
 
-// import { Modal } from './Modal/Modal';
-
 export class App extends Component {
   state = {
     searchQuery: '',
