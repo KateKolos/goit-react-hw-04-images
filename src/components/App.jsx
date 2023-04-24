@@ -64,49 +64,6 @@ export default function App() {
 
     getImages();
   }, [searchQuery, page]);
-  //  const  componentDidUpdate(_, prevState) =>{
-  //     if (prevState.searchQuery !== this.state.searchQuery) {
-  //       this.getImages();
-  //     }
-  //   }
-
-  // const getImages = async () => {
-  //   setIsActiveBtn(false);
-  //   setIsLoading(true);
-
-  //   try {
-  //     const { hits, totalHits } = await fetchImages(searchQuery, page);
-
-  //     setImages(images => [...images, hits]);
-  //     setPage(page + 1);
-  //     setIsActiveBtn(true);
-  //     setTotalHits();
-
-  //     // this.setState(({ page, images }) => ({
-  //     //   images: [...images, ...hits],
-  //     //   page: page + 1,
-  //     //   isActiveBtn: true,
-  //     //   totalHits,
-  //     // }));
-
-  //     if (hits.length === 0) {
-  //       setIsActiveBtn(false);
-
-  //       return toast.error(
-  //         'Sorry, there are no images matching your request. Please try again.'
-  //       );
-  //     }
-  //     return toast.success(
-  //       `Success! Here are the pictures on your ${searchQuery} request`
-  //     );
-  //   } catch (error) {
-  //     setError(error.message);
-  //     setIsActiveBtn(false);
-  //     return toast.error('Something went wrong. Please try again!');
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const incrementPage = () => {
     setPage(page => page + 1);
