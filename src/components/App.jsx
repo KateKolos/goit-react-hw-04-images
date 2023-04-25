@@ -12,6 +12,7 @@ import Modal from './Modal/Modal';
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
+  console.log('App ~ [page, setPage]:', [page, setPage]);
   const [images, setImages] = useState([]);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +67,7 @@ export default function App() {
   }, [searchQuery, page]);
 
   const incrementPage = () => {
-    setPage(page => page + 1);
+    setPage(page + 1);
   };
 
   const getLargeImage = largeImage => {
